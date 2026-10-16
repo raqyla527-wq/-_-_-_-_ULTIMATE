@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>كرة القدم من علاء — Ultimate</title>
+<style>
+*{box-sizing:border-box;touch-action:none}body{margin:0;font-family:Arial,sans-serif;background:#07131e;color:#fff;overflow:hidden}
+button{font:inherit}.screen{height:100vh;display:flex;align-items:center;justify-content:center}.hidden{display:none!important}
+#home{background:radial-gradient(circle at 50% 30%,#194f73,#06111b 65%)}.card{text-align:center;width:min(92%,520px);padding:28px;border:1px solid #ffffff25;border-radius:28px;background:#ffffff0d;backdrop-filter:blur(12px);box-shadow:0 20px 70px #0008}
+.logo{font-size:48px;font-weight:900;margin-bottom:8px}.sub{color:#b8d4e6;margin-bottom:24px}.menuBtn{width:100%;padding:15px;margin:7px 0;border:0;border-radius:16px;background:#16a34a;color:#fff;font-weight:800;font-size:20px;box-shadow:0 4px 0 #09652e}.menuBtn:active{transform:translateY(3px);box-shadow:none}
+#game{position:relative;height:100vh;background:#111}.top{position:absolute;z-index:20;top:8px;left:50%;transform:translateX(-50%);min-width:310px;text-align:center;background:#07131ee8;border-radius:18px;padding:8px 14px;border:1px solid #ffffff20}.score{font-size:22px;font-weight:900}.info{font-size:13px;color:#b9cbd7}
+#pitch{position:absolute;width:min(94vw,760px);height:min(94vh,900px);left:50%;top:50%;transform:translate(-50%,-50%);background:repeating-linear-gradient(90deg,#198743 0 72px,#177c3d 72px 144px);border:4px solid #fff;border-radius:10px;overflow:hidden}
+.l{position:absolute;border:3px solid #fff}.half{top:50%;left:0;right:0}.circle{width:145px;height:145px;border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%)}.boxT{width:48%;height:21%;top:0;left:26%;border-top:0}.boxB{width:48%;height:21%;bottom:0;left:26%;border-bottom:0}
+.goal{position:absolute;width:20%;height:8%;left:40%;border:5px solid #fff}.gT{top:-3%}.gB{bottom:-3%}
+.pl{position:absolute;width:43px;height:43px;border-radius:50%;border:3px solid #fff;z-index:5;box-shadow:0 4px 8px #0008}.blue{background:#1680ff}.red{background:#e43737}.active{outline:4px solid #ffe45c}
+#ball{position:absolute;width:25px;height:25px;background:#fff;border-radius:50%;z-index:8;box-shadow:0 2px 6px #000}.energy{position:absolute;bottom:0;left:50%;transform:translateX(-50%);height:5px;width:35px;background:#38d66b;border-radius:5px}
+#joy{position:absolute;z-index:30;left:18px;bottom:18px;width:145px;height:145px;border-radius:50%;background:#ffffff25;border:2px solid #ffffff40}.stick{position:absolute;width:62px;height:62px;left:40px;top:40px;border-radius:50%;background:#ffffff80}
+.actions{position:absolute;right:18px;bottom:20px;z-index:30;display:grid;grid-template-columns:repeat(2,75px);gap:10px}.act{height:62px;border:0;border-radius:50%;background:#ffffffd9;color:#07131e;font-weight:900;box-shadow:0 4px 10px #0006}.shoot{background:#ffd43b}.skill{background:#71e0ff}
+.pause{position:absolute;right:12px;top:70px;z-index:31;border:0;border-radius:12px;padding:9px;background:#07131ecf;color:#fff}
+#toast{position:absolute;z-index:50;top:38%;left:50%;transform:translate(-50%,-50%);font-size:38px;font-weight:900;text-shadow:0 4px 15px #000;display:none;text-align:center}
+#pause{position:absolute;z-index:100;inset:0;background:#06111be8;display:none;align-items:center;justify-content:center}.pausebox{background:#122536;padding:28px;border-radius:24px;text-align:center;width:min(90%,420px)}
+</style>
+</head>
+<body>
+<section id="home" class="screen">
+<div class="card">
+<div class="logo">⚽ كرة القدم من علاء</div><div class="sub">ULTIMATE • النسخة الاحترافية</div>
+<button class="menuBtn" onclick="start()">🏟️ مباراة سريعة</button>
+<button class="menuBtn" onclick="championship()">🏆 البطولة</button>
+<button class="menuBtn" onclick="showHelp()">🎮 طريقة اللعب</button>
+<button class="menuBtn" onclick="resetSave()">♻️ إعادة التقدم</button>
+<div id="stats" class="info"></div>
+</div></section>
+<section id="game" class="hidden">
+<div class="top"><div class="score"><span id="teamA">علاء</span> <b id="sc">0 - 0</b> <span>الخصم</span></div><div class="info">⏱️ <span id="clock">03:00</span> • ⚡ <span id="stamina">100</span>%</div></div>
+<button class="pause" onclick="pauseGame()">Ⅱ</button>
+<div id="pitch">
+<div class="l half"></div><div class="l circle"></div><div class="l boxT"></div><div class="l boxB"></div><div class="goal gT"></div><div class="goal gB"></div>
+<div id="p0" class="pl blue active"></div><div id="p1" class="pl blue"></div><div id="p2" class="pl blue"></div><div id="p3" class="pl blue"></div>
+<div id="e0" class="pl red"></div><div id="e1" class="pl red"></div><div id="e2" class="pl red"></div><div id="e3" class="pl red"></div>
+<div id="ball"></div>
+</div>
+<div id="joy"><div class="stick"></div></div>
+<div class="actions"><button class="act" onclick="pass()">تمرير</button><button class="act shoot" onclick="shoot()">تسديد</button><button class="act skill" onclick="skill()">مهارة</button><button class="act" onclick="switchPlayer()">تبديل</button></div>
+<div id="toast"></div>
+<div id="pause"><div class="pausebox"><h2>⏸️ المباراة متوقفة</h2><button class="menuBtn" onclick="pauseGame()">متابعة</button><button class="menuBtn" onclick="goHome()">القائمة الرئيسية</button></div></div>
+</section>
+<script>
+const $=id=>document.getElementById(id);let running=false,paused=false,time=180,score=[0,0],energy=100,px=48,py=72,bx=50,by=70,champ=false;
+let players=[['p0',48,72],['p1',25,62],['p2',72,62],['p3',50,48]], enemies=[['e0',50,25],['e1',25,38],['e2',75,38],['e3',50,52]];
+function pos(id,x,y){$(id).style.left=x+'%';$(id).style.top=y+'%'}
+function render(){pos('p0',px,py);pos('ball',bx,by);players.slice(1).forEach((p,i)=>pos(p[0],p[1],p[2]));enemies.forEach((p,i)=>{let drift=Math.sin(Date.now()/900+i)*.5;pos(p[0],p[1]+drift,p[2])});$('sc').textContent=score[0]+' - '+score[1];$('stamina').textContent=Math.round(energy);$('clock').textContent=String(Math.floor(time/60)).padStart(2,'0')+':'+String(time%60).padStart(2,'0')}
+function start(){champ=false;newMatch()}
+function championship(){champ=true;newMatch()}
+function newMatch(){document.querySelector('#home').classList.add('hidden');$('game').classList.remove('hidden');score=[0,0];time=180;energy=100;px=48;py=72;bx=50;by=70;running=true;paused=false;render();toast(champ?'🏆 مباراة البطولة':'⚽ انطلاق المباراة',1000);if(!window.loop){window.loop=setInterval(tick,1000);window.anim=requestAnimationFrame(ai)}}
+function tick(){if(!running||paused)return;time--;if(time<=0){running=false;toast(score[0]>score[1]?'🏆 فزت بالمباراة!':'انتهت المباراة',2500);if(champ&&score[0]>score[1]){let w=+(localStorage.wins||0)+1;localStorage.wins=w}setTimeout(goHome,2700)};if(energy<100)energy+=1;render()}
+function ai(){if(running&&!paused){enemies.forEach((e,i)=>{let targetX=bx+(50-bx)*.08,targetY=by+(25-by)*.08;e[1]+=Math.max(-.8,Math.min(.8,targetX-e[1]));e[2]+=Math.max(-.8,Math.min(.8,targetY-e[2]))});render()}requestAnimationFrame(ai)}
+function move(dx,dy){if(!running||paused)return;let speed=energy>15?2.2:1.2;px=Math.max(3,Math.min(93,px+dx*speed));py=Math.max(4,Math.min(92,py+dy*speed));energy=Math.max(0,energy-.6);if(Math.hypot(px-bx,py-by)<8){bx=px+2;by=py+2}render()}
+let dragging=false;const joy=$('joy'),stick=joy.querySelector('.stick');function joyMove(e){let r=joy.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,dx=e.clientX-cx,dy=e.clientY-cy,l=Math.hypot(dx,dy)||1,m=Math.min(48,l);stick.style.transform=`translate(${dx/l*m}px,${dy/l*m}px)`;move(dx/l,dy/l)}
+joy.addEventListener('pointerdown',e=>{dragging=true;joy.setPointerCapture(e.pointerId);joyMove(e)});joy.addEventListener('pointermove',e=>{if(dragging)joyMove(e)});joy.addEventListener('pointerup',()=>{dragging=false;stick.style.transform='translate(0,0)'});
+function pass(){if(!running||paused)return;bx=Math.min(94,px+(px>50?8:-8));by=Math.max(5,Math.min(94,py-6));energy=Math.max(0,energy-3);render();beep(440)}
+function shoot(){if(!running||paused)return;let near=Math.hypot(px-bx,py-by)<12;if(near){bx=50;by=8;energy=Math.max(0,energy-8);score[0]++;toast('⚽ GOOOOOL!',1000);beep(880);if(champ&&score[0]>=3){toast('🏆 بطل البطولة!',2200);running=false}}else toast('اقترب من الكرة!',700);render()}
+function skill(){if(!running||paused)return;energy=Math.max(0,energy-15);px=Math.max(3,Math.min(93,px+(px>50?-7:7)));toast('✨ مهارة!',500);beep(660);render()}
+function switchPlayer(){document.querySelector('.active')?.classList.remove('active');let n=$('p0');n.classList.add('active');toast('🔄 تم تبديل اللاعب',500)}
+function pauseGame(){if(!running)return;paused=!paused;$('pause').style.display=paused?'flex':'none'}
+function goHome(){running=false;$('game').classList.add('hidden');$('home').classList.remove('hidden');$('stats').textContent='🏆 انتصارات البطولة: '+(localStorage.wins||0)}
+function showHelp(){alert('حرّك العصا للتحرك. اقترب من الكرة ثم استخدم تمرير أو تسديد. زر المهارة يعطيك اندفاعة سريعة. لديك 3 دقائق لكل مباراة.')}
+function resetSave(){localStorage.removeItem('wins');$('stats').textContent='🏆 انتصارات البطولة: 0';toast('تمت إعادة التقدم',900)}
+function toast(t,ms){let x=$('toast');x.textContent=t;x.style.display='block';setTimeout(()=>x.style.display='none',ms)}
+let audio;function beep(freq){try{audio=audio||new AudioContext();let o=audio.createOscillator(),g=audio.createGain();o.frequency.value=freq;o.connect(g);g.connect(audio.destination);g.gain.value=.04;o.start();o.stop(audio.currentTime+.12)}catch(e){}}
+$('stats').textContent='🏆 انتصارات البطولة: '+(localStorage.wins||0);render();
+</script></body></html>
